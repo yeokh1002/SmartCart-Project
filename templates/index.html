@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="static/logo1.png">
+    <title>SmartCart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+    </style>
+</head>
+<style>
+        .navbar {
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white !important;
+        }
+        .container {
+            margin-top: 60px;
+        }
+        .video-background {
+            width: 100%;
+            height: 500px; /* Set the height of the video here */
+            object-fit: cover; /* Ensure the video covers the entire container */
+            transform: scale(1.10);
+
+        }
+        .nav-link:hover {
+            color: orange !important; /* Change text color on hover */
+        }
+        .nav-link.btn {
+            border-radius: 5px; /* Add rounded corners to buttons */
+        }
+
+        .modal-content {
+            background-color: #fff; /* Set modal content background color */
+            color: #000; /* Set modal content text color */
+        }
+        .modal-content.dark {
+            background-color: #000; /* Set modal content background color for dark theme */
+            color: #fff; /* Set modal content text color for dark theme */
+        }
+        .text-center mt-5 {
+            padding-bottom: 100px;
+        }
+</style>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <img src="static/logo1.png" width="250">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#"><i class="fas fa-home"></i> Home</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="settingsLink"><i class="fas fa-cog"></i> Settings</a>
+      </li>
+      <li class="nav-item">
+
+        <a class="nav-link btn btn-outline-primary mr-2" href="#" data-toggle="modal" data-target="#signupModal">Sign Up</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link btn btn-primary" href="#" data-toggle="modal" data-target="#signinModal">Sign In</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Video -->
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <video class="video-background" autoplay loop muted>
+        <source src="static/ecommerce_vid.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</div>
+
+
+<!-- Go To Main Page Button -->
+<div class="text-center mt-5">
+  <a href="main" class="custom-btn">Go To Main Page</a>
+</div>
+
+<style>
+  .custom-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+    border: none;
+    border-radius: 50px;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .custom-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+  }
+
+  .custom-btn:active {
+    transform: translateY(1px);
+  }
+
+  /* Optional: Add a subtle "glow" effect on hover */
+  .custom-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .custom-btn:hover::after {
+    opacity: 1;
+  }
+</style>
+<br><br><br> <!-- Adds extra space -->
+
+<!-- Sign Up Successful Message -------------------------------------------------------------------------------------->
+{% if signup_message %}
+<div class="alert-popup animate__animated animate__fadeInRight">
+  <div class="alert-content">
+    <div class="alert-message">
+      <i class="fas fa-check-circle"></i>
+      <span>{{ signup_message }}</span>
+    </div>
+    <button class="close-alert" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
+
+<style>
+  .alert-popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #4CAF50;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+    transform: translateX(0);
+    transition: all 0.3s ease;
+  }
+
+  .alert-popup.hide {
+    transform: translateX(120%);
+  }
+
+  .alert-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .alert-message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+  }
+
+  .alert-message i {
+    font-size: 1.5rem;
+  }
+
+  .close-alert {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-left: 15px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+
+  .close-alert:hover {
+    opacity: 1;
+  }
+
+  /* Different message types */
+  .alert-popup.error {
+    background: #f44336;
+  }
+
+  .alert-popup.warning {
+    background: #ff9800;
+  }
+
+  .alert-popup.info {
+    background: #2196F3;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const popup = document.querySelector('.alert-popup');
+    const closeBtn = document.querySelector('.close-alert');
+
+    if (popup) {
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        popup.classList.add('hide');
+        setTimeout(() => popup.remove(), 300);
+      }, 5000);
+
+      // Manual close
+      closeBtn.addEventListener('click', () => {
+        popup.classList.add('hide');
+        setTimeout(() => popup.remove(), 300);
+      });
+
+      // Add click anywhere to close
+      popup.addEventListener('click', () => {
+        popup.classList.add('hide');
+        setTimeout(() => popup.remove(), 300);
+      });
+    }
+  });
+</script>
+{% endif %}
+
+<!-- Trending recommendations ---------------------------------------------------------------------------------------->
+<div class="container mt-5 trending-section">
+  <h2 class="text-center mb-4"> Trending Products</h2>
+  <div class="row mt-4">
+    {% for index, product in trending_products.iterrows() %}
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+      <div class="card product-card h-100">
+        <div class="product-badge">Trending</div>
+        <div class="product-image-container">
+          <img src="{{ random_product_image_urls[index] }}" class="card-img-top" alt="{{ product['Name'] }}" loading="lazy">
+          <div class="quick-view" data-toggle="modal" data-target="#productModal{{ index }}">
+            <i class="fas fa-eye"></i> Quick View
+          </div>
+        </div>
+        <div class="card-body d-flex flex-column">
+          <div class="product-rating mb-2">
+            {% for i in range(1, 6) %}
+              {% if i <= product['Rating']|round %}
+                <i class="fas fa-star text-warning"></i>
+              {% else %}
+                <i class="far fa-star text-warning"></i>
+              {% endif %}
+            {% endfor %}
+            <span class="small">({{ product['ReviewCount'] }})</span>
+          </div>
+          <h5 class="card-title">{{product['Name']}}</h5>
+          <p class="card-text text-muted"> {{ product['Brand'] }}</p>
+          <div class="mt-auto">
+            <div class="price mb-2">${{ product['Price']}}</div>
+            <button type="button" class="btn btn-primary btn-block add-to-cart" data-id="{{ index }}">
+              <i class="fas fa-shopping-cart"></i> Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="productModal{{ index }}" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="productModalLabel">{{ product['Name'] }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="product-gallery">
+                  <img src="{{ random_product_image_urls[index] }}" class="img-fluid main-image" alt="{{ product['Name'] }}">
+                  <div class="thumbnail-container mt-2">
+                    <!-- Thumbnails would go here -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="product-details">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="product-rating">
+                      {% for i in range(1, 6) %}
+                        {% if i <= product['Rating']|round %}
+                          <i class="fas fa-star text-warning"></i>
+                        {% else %}
+                          <i class="far fa-star text-warning"></i>
+                        {% endif %}
+                      {% endfor %}
+                      <span>({{ product['ReviewCount'] }} reviews)</span>
+                    </div>
+                    <span class="badge badge-success">In Stock</span>
+                  </div>
+
+                  <div class="price mb-3">
+                    <span class="current-price">${{ product['Price'] }}</span>
+                    <span class="original-price">${{ (product['Price'] * 1.2)|round(2) }}</span>
+                    <span class="discount">20% OFF</span>
+                  </div>
+
+                  <p class="brand">Brand: <strong>{{ product['Brand'] }}</strong></p>
+
+                  <div class="product-actions mt-4">
+                    <div class="quantity-selector mb-3">
+                      <button class="btn btn-outline-secondary quantity-btn minus">-</button>
+                      <input type="number" class="quantity-input" value="1" min="1">
+                      <button class="btn btn-outline-secondary quantity-btn plus">+</button>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg btn-block add-to-cart-modal mb-2" data-id="{{ index }}">
+                      <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                    <button class="btn btn-outline-secondary btn-block">
+                      <i class="far fa-heart"></i> Add to Wishlist
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-description mt-4">
+              <h6>Your Perfect Picks!</h6>
+              <ul>
+                <li>High-quality materials</li>
+                <li>Durable construction</li>
+                <li>1-year warranty</li>
+                <li>Free shipping on orders over $50</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  /* Animation for signup message */
+  .signup-message {
+    text-align: center;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    max-width: 600px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  /* Product card styling */
+  .trending-section {
+    position: relative;
+  }
+
+  .product-card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  }
+
+  .product-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff5722;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 1;
+  }
+
+  .product-image-container {
+    position: relative;
+    overflow: hidden;
+    height: 200px;
+  }
+
+  .product-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .product-card:hover .product-image-container img {
+    transform: scale(1.05);
+  }
+
+  .quick-view {
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: bottom 0.3s ease;
+  }
+
+  .product-card:hover .quick-view {
+    bottom: 0;
+  }
+
+  .product-rating {
+    font-size: 14px;
+  }
+
+  .price {
+    font-weight: bold;
+    font-size: 18px;
+    color: #2c3e50;
+  }
+
+  /* Modal styling */
+  .modal-content {
+    border-radius: 15px;
+  }
+
+  .product-gallery {
+    position: relative;
+  }
+
+  .main-image {
+    border-radius: 10px;
+    max-height: 400px;
+    object-fit: contain;
+  }
+
+  .thumbnail-container {
+    display: flex;
+    gap: 10px;
+  }
+
+  .thumbnail {
+    width: 60px;
+    height: 60px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .current-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #e74c3c;
+  }
+
+  .original-price {
+    text-decoration: line-through;
+    color: #95a5a6;
+    margin-left: 10px;
+  }
+
+  .discount {
+    background-color: #e74c3c;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-left: 10px;
+  }
+
+  .quantity-selector {
+    display: flex;
+    align-items: center;
+  }
+
+  .quantity-input {
+    width: 50px;
+    text-align: center;
+    margin: 0 10px;
+  }
+
+  .quantity-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .add-to-cart-modal {
+    transition: all 0.3s ease;
+  }
+
+  .add-to-cart-modal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+</style>
+
+<script>
+$(document).ready(function() {
+  // Add to cart animation
+  $('.add-to-cart, .add-to-cart-modal').click(function() {
+    const productId = $(this).data('id');
+    const productCard = $(this).closest('.product-card');
+
+    // Add animation class
+    productCard.addClass('animate__animated animate__pulse');
+
+    // Remove animation class after it completes
+    setTimeout(function() {
+      productCard.removeClass('animate__animated animate__pulse');
+    }, 1000);
+
+    // Here you would normally add to cart logic
+    console.log('Added product ' + productId + ' to cart');
+
+    // Show notification
+    alert('Added to cart!');
+  });
+
+  // Quantity selector functionality
+  $('.quantity-btn.plus').click(function() {
+    const input = $(this).siblings('.quantity-input');
+    input.val(parseInt(input.val()) + 1);
+  });
+
+  $('.quantity-btn.minus').click(function() {
+    const input = $(this).siblings('.quantity-input');
+    if (parseInt(input.val()) > 1) {
+      input.val(parseInt(input.val()) - 1);
+    }
+  });
+
+  // Quick view hover effect
+  $('.product-card').hover(
+    function() {
+      $(this).find('.quick-view').css('bottom', '0');
+    },
+    function() {
+      $(this).find('.quick-view').css('bottom', '-50px');
+    }
+  );
+});
+</script>
+
+
+<!-- Sign-Up Modal Structure ---------------------------------------------------------------------------------------->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div class="row g-0">
+          <!-- Left side with welcome text -->
+          <div class="col-lg-6 d-none d-lg-flex align-items-center" style="background-color: #aec0e4; padding: 2rem;">
+            <div class="text-center text-lg-start">
+              <h1 class="my-3 display-5 fw-bold ls-tight">
+                Your Perfect Picks, <br />
+                <span class="text-primary">Every Time.</span>
+              </h1>
+              <p style="color: hsl(217, 10%, 50.8%)">
+                At SmartCart, we revolutionize beauty and body care shopping with a personalized, AI-powered e-commerce experience.
+                  Our platform leverages cutting-edge recommendation algorithms to curate the perfect products for your unique needs—whether you're searching for skincare essentials,
+                  haircare must-haves, or luxurious body treatments.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right side with form -->
+          <div class="col-lg-6">
+            <div class="card rounded-0 border-0 h-100">
+              <div class="card-body py-5 px-md-5">
+                <h2 class="text-center mb-4">Sign Up</h2>
+               <form action="/signup" method="post">
+                <div class="mb-3">
+                  <label for="username" class="form-label">Username</label>
+                  <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                 <div class="text-center">  <!-- Added wrapper -->
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                 </div>
+              </form>
+
+                  <!-- Social login buttons -->
+                  <div class="text-center">
+                    <p>or sign up with:</p>
+                    <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                      <i class="fab fa-facebook-f"></i>
+                    </button>
+                    <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                      <i class="fab fa-google"></i>
+                    </button>
+                    <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                      <i class="fab fa-twitter"></i>
+                    </button>
+                    <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                      <i class="fab fa-github"></i>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Sign-In Modal ----------------------------------------------------------------------------------------------------->
+<div class="modal fade" id="signinModal" tabindex="-1" aria-labelledby="signinModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div class="row g-0">
+          <!-- Left side with welcome text -->
+          <div class="col-lg-6 d-none d-lg-flex align-items-center" style="background-color: #aec0e4; padding: 2rem;">
+            <div class="text-center text-lg-start">
+              <h1 class="my-3 display-5 fw-bold ls-tight">
+                Your Style, <br />
+                <span class="text-primary">Our Algorithms.</span>
+              </h1>
+              <p style="color: hsl(217, 10%, 50.8%)">
+                At SmartCart, we revolutionize beauty and body care shopping with a personalized, AI-powered e-commerce experience.
+                  Our platform leverages cutting-edge recommendation algorithms to curate the perfect products for your unique needs—whether you're searching for skincare essentials,
+                  haircare must-haves, or luxurious body treatments.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right side with form -->
+          <div class="col-lg-6">
+            <div class="card rounded-0 border-0 h-100">
+              <div class="card-body py-5 px-md-5">
+                <h2 class="text-center mb-4">Sign In</h2>
+                <form action="/signin" method="post">
+                  <div class="mb-3">
+                    <label for="signinUsername" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="signinUsername" name="signinUsername" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="signinPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="signinPassword" name="signinPassword" required>
+                  </div>
+                  <div class="text-center">  <!-- Added wrapper -->
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Settings Modal --------------------------------------------------------------------------------------------------->
+<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content shadow-lg">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title font-weight-bold" id="settingsModalLabel">
+          <i class="fas fa-cog mr-2"></i>Settings
+        </h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Theme Selection -->
+        <div class="mb-4">
+          <h5 class="font-weight-bold text-primary mb-3">
+            <i class="fas fa-palette mr-2"></i>Choose Theme
+          </h5>
+          <div class="d-flex flex-wrap">
+            <div class="form-check theme-option mr-4 mb-3">
+              <input class="form-check-input" type="radio" name="theme" id="defaultTheme" value="default" checked>
+              <label class="form-check-label d-flex align-items-center" for="defaultTheme">
+                <span class="theme-preview mr-2 bg-light border rounded-circle d-block" style="width: 20px; height: 20px;"></span>
+                Default
+              </label>
+            </div>
+            <div class="form-check theme-option mr-4 mb-3">
+              <input class="form-check-input" type="radio" name="theme" id="blackTheme" value="black">
+              <label class="form-check-label d-flex align-items-center" for="blackTheme">
+                <span class="theme-preview mr-2 bg-dark border rounded-circle d-block" style="width: 20px; height: 20px;"></span>
+                Dark Mode
+              </label>
+            </div>
+            <div class="form-check theme-option">
+              <input class="form-check-input" type="radio" name="theme" id="blueTheme" value="blue">
+              <label class="form-check-label d-flex align-items-center" for="blueTheme">
+                <span class="theme-preview mr-2 border rounded-circle d-block bg-primary" style="width: 20px; height: 20px;"></span>
+                Blue Theme
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Zoom Controls -->
+        <div>
+          <h5 class="font-weight-bold text-primary mb-3">
+            <i class="fas fa-search mr-2"></i>Zoom Controls
+          </h5>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-primary" id="zoomOut">
+              <i class="fas fa-search-minus"></i> Zoom Out
+            </button>
+            <button type="button" class="btn btn-outline-primary" id="resetZoom">
+              <i class="fas fa-search"></i> Reset
+            </button>
+            <button type="button" class="btn btn-outline-primary" id="zoomIn">
+              <i class="fas fa-search-plus"></i> Zoom In
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+          <i class="fas fa-times mr-2"></i>Cancel
+        </button>
+        <button type="button" class="btn btn-primary" id="applyTheme">
+          <i class="fas fa-check mr-2"></i>Apply Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- js script for setting modal -->
+<script>
+  // Handle click on Settings link to open the modal
+  document.getElementById('settingsLink').addEventListener('click', function() {
+    $('#settingsModal').modal('show');
+  });
+
+  // Handle theme apply button click
+  document.getElementById('applyTheme').addEventListener('click', function() {
+    // Get the selected theme value
+    var selectedTheme = document.querySelector('input[name="theme"]:checked').value;
+
+    // Apply the selected theme
+    if (selectedTheme === 'black') {
+      document.body.style.backgroundColor = 'black';
+      document.body.style.color = 'white';
+    } else if (selectedTheme === 'blue') {
+      document.body.style.backgroundColor = '#89CFF0';
+      document.body.style.color = 'white';
+    } else {
+      // Default theme
+      document.body.style.backgroundColor = '#f8f9fa';
+      document.body.style.color = 'black';
+    }
+
+    // Close the modal
+    $('#settingsModal').modal('hide');
+  });
+
+  document.getElementById('zoomIn').addEventListener('click', function() {
+    document.body.style.zoom = "115%";
+  });
+  document.getElementById('resetZoom').addEventListener('click', function() {
+    document.body.style.zoom = "100%";
+  });
+  document.getElementById('zoomOut').addEventListener('click', function() {
+    document.body.style.zoom = "85%";
+  });
+</script>
+<!-- Footer ----------------------------------------------------------------------------------------------------------->
+<footer class="footer text-white">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col-md-3 col-sm-6">
+                <h5>About Us</h5>
+                <p>At SmartCart, we revolutionize beauty and body care shopping with a personalized, AI-powered e-commerce experience.</p>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <h5>Support</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <h5>Contact Us</h5>
+                <address>
+                    <strong>SmartCart Limited</strong><br>
+                    <br>
+                    3510 avenue Lionel Groulx,
+                    Montreal, QC H4C 1M7
+                    Canada<br>
+                    <i class="fas fa-phone"></i> +85297121659<br>
+                    <i class="fas fa-envelope"></i> u3610328@connect.hku.hk
+                </address>
+            </div>
+        </div>
+        <div class="social-icons text-center mt-3">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12 text-center">
+                <hr class="footer-line">
+                <p>© 2024 SmartCart. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Footer CSS -->
+<style>
+.footer {
+    background: linear-gradient(135deg, #1e3c72, #2a5298); /* Blue gradient */
+    color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.footer h5 {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.footer ul {
+    padding: 0;
+}
+
+.footer ul li {
+    list-style: none;
+    margin-bottom: 8px;
+}
+
+.footer ul li a {
+    color: #bcdffb;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.footer ul li a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.footer address {
+    font-style: normal;
+    color: #bcdffb;
+}
+
+.footer .social-icons a {
+    display: inline-block;
+    color: white;
+    font-size: 20px;
+    margin: 0 10px;
+    transition: 0.3s;
+}
+
+.footer .social-icons a:hover {
+    color: #bcdffb;
+    transform: scale(1.2);
+}
+
+.footer-line {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+</style>
+
+
+</body>
+</html>
